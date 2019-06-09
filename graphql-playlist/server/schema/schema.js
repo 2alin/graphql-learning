@@ -19,8 +19,7 @@ const BookType = new GraphQLObjectType({
     genre: { type: GraphQLString },
     author: {
       type: AuthorType,
-      resolve(parent, args) {
-        // return authors.find(author => author.id === parent.authorId);
+      resolve(parent, _) {
         return Author.findById(parent.authorId);
       },
     },
@@ -35,8 +34,7 @@ const AuthorType = new GraphQLObjectType({
     age: { type: GraphQLInt },
     books: {
       type: new GraphQLList(BookType),
-      resolve(parent, args) {
-        // return books.filter(book => book.authorId === parent.id);
+      resolve(parent, _) {
         return Book.find({ authorId: parent.id });
       },
     },
@@ -49,31 +47,26 @@ const RootQuery = new GraphQLObjectType({
     book: {
       type: BookType,
       args: { id: { type: GraphQLID } },
-      resolve(parent, args) {
-        // code to get data from db / other source
-        // return books.find(book => book.id === args.id);
+      resolve(_, args) {
         return Book.findById(args.id);
       },
     },
     author: {
       type: AuthorType,
       args: { id: { type: GraphQLID } },
-      resolve(parent, args) {
-        // return authors.find(author => author.id === args.id);
+      resolve(_, args) {
         return Author.findById(args.id);
       },
     },
     books: {
       type: new GraphQLList(BookType),
       resolve() {
-        // return books;
         return Book.find({});
       },
     },
     authors: {
       type: new GraphQLList(AuthorType),
       resolve() {
-        // return authors;
         return Author.find({});
       },
     },
@@ -89,7 +82,7 @@ const Mutation = new GraphQLObjectType({
         name: { type: GraphQLString },
         age: { type: GraphQLInt },
       },
-      resolve(parents, args) {
+      resolve(_, args) {
         const author = new Author({
           name: args.name,
           age: args.age,
@@ -104,7 +97,7 @@ const Mutation = new GraphQLObjectType({
         genre: { type: GraphQLString },
         authorId: { type: GraphQLID },
       },
-      resolve(parents, args) {
+      resolve(_, args) {
         const book = new Book({
           name: args.name,
           genre: args.genre,
