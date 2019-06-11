@@ -14,24 +14,12 @@ class AddBook extends Component {
     this.state = { ...initState };
   }
 
-  displayAuthors() {
-    const { getAuthorsQuery: data } = this.props;
-    if (data.loading) {
-      return <option disabled>Loading authors...</option>;
-    } else {
-      return data.authors.map(author => (
-        <option key={author.id} value={author.id}>
-          {author.name}
-        </option>
-      ));
-    }
-  }
-
-  handleSubmit = e => {
+  handleSubmit = (e) => {
     e.preventDefault();
 
     const formattedState = {};
-    Object.keys(this.state).forEach(key => {
+
+    Object.keys(this.state).forEach((key) => {
       formattedState[key] = this.state[key].trim();
     });
     formattedState.genre = formattedState.genre.toLowerCase();
@@ -46,40 +34,59 @@ class AddBook extends Component {
     this.setState({ ...initState });
   };
 
+  displayAuthors() {
+    const { getAuthorsQuery: data } = this.props;
+    if (data.loading) {
+      return <option disabled>Loading authors...</option>;
+    }
+    return data.authors.map(author => (
+      <option key={author.id} value={author.id}>
+        {author.name}
+      </option>
+    ));
+  }
+
   render() {
+    const { name, genre, authorId } = this.state;
     return (
       <form id="add-book" onSubmit={this.handleSubmit}>
         <div className="field">
-          <label htmlFor="name">Book name:</label>
-          <input
-            type="text"
-            id="name"
-            onChange={e => this.setState({ name: e.target.value })}
-            value={this.state.name}
-          />
+          <label htmlFor="name">
+            Book name:
+            <input
+              type="text"
+              id="name"
+              onChange={e => this.setState({ name: e.target.value })}
+              value={name}
+            />
+          </label>
         </div>
         <div className="field">
-          <label htmlFor="genre">Genre:</label>
-          <input
-            type="text"
-            id="genre"
-            onChange={e => this.setState({ genre: e.target.value })}
-            value={this.state.genre}
-          />
+          <label htmlFor="genre">
+            Genre:
+            <input
+              type="text"
+              id="genre"
+              onChange={e => this.setState({ genre: e.target.value })}
+              value={genre}
+            />
+          </label>
         </div>
         <div className="field">
-          <label htmlFor="author">Author:</label>
-          <select
-            id="author"
-            onChange={e => this.setState({ authorId: e.target.value })}
-            value={this.state.authorId}
-          >
-            <option value="">Select author</option>
-            {this.displayAuthors()}
-          </select>
+          <label htmlFor="author">
+            Author:
+            <select
+              id="author"
+              onChange={e => this.setState({ authorId: e.target.value })}
+              value={authorId}
+            >
+              <option value="">Select author</option>
+              {this.displayAuthors()}
+            </select>
+          </label>
         </div>
 
-        <button>+</button>
+        <button type="submit">+</button>
       </form>
     );
   }
@@ -87,5 +94,5 @@ class AddBook extends Component {
 
 export default compose(
   graphql(getAuthorsQuery, { name: 'getAuthorsQuery' }),
-  graphql(addBookMutation, { name: 'addBookMutation' })
+  graphql(addBookMutation, { name: 'addBookMutation' }),
 )(AddBook);
