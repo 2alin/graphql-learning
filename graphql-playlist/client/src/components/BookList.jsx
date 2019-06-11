@@ -3,38 +3,22 @@ import { graphql } from 'react-apollo';
 import { getBooksQuery } from '../queries';
 
 class BookList extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: true,
-      books: [],
-    };
-  }
-
-  componentDidUpdate(prevProps) {
+  displayBooks() {
     const { data } = this.props;
-    if (data.loading !== prevProps.data.loading) {
-      this.setState({
-        loading: data.loading,
-        books: data.books ? data.books : [],
-      });
+    if (data.loading) {
+      return <div>Loading books...</div>;
     }
+    return (
+      <ul>
+        {data.books.map(book => (
+          <li key={book.id}>{book.name}</li>
+        ))}
+      </ul>
+    );
   }
 
   render() {
-    const { books, loading } = this.state;
-
-    return (
-      <div>
-        {!loading ? (
-          <ul id="book-list">
-            {books && books.map(book => <li key={book.id}>{book.name}</li>)}
-          </ul>
-        ) : (
-          <div>Loading books...</div>
-        )}
-      </div>
-    );
+    return <div>{this.displayBooks()}</div>;
   }
 }
 
