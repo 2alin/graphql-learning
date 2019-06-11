@@ -2,14 +2,16 @@ import React, { Component } from 'react';
 import { graphql, compose } from 'react-apollo';
 import { getAuthorsQuery, addBookMutation, getBooksQuery } from '../queries';
 
+const initState = {
+  name: '',
+  genre: '',
+  authorId: '',
+};
+
 class AddBook extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      name: '',
-      genre: '',
-      authorId: '',
-    };
+    this.state = { ...initState };
   }
 
   displayAuthors() {
@@ -27,12 +29,21 @@ class AddBook extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
+
+    const formattedState = {};
+    Object.keys(this.state).forEach(key => {
+      formattedState[key] = this.state[key].trim();
+    });
+    formattedState.genre = formattedState.genre.toLowerCase();
+
     this.props.addBookMutation({
       variables: {
-        ...this.state,
+        ...formattedState,
       },
       refetchQueries: [{ query: getBooksQuery }],
     });
+
+    this.setState({ ...initState });
   };
 
   render() {
