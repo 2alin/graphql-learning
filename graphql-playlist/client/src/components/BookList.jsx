@@ -9,6 +9,9 @@ class BookList extends Component {
     if (data.loading) {
       return <div>Loading books...</div>;
     }
+    if (data.error) {
+      return <div>Can&apos;t connect to API</div>;
+    }
     return (
       <ul>
         {data.books.map(book => (

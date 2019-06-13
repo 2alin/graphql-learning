@@ -42,6 +42,9 @@ class AddBook extends Component {
     if (getAuthors.loading) {
       return <option disabled>Loading authors...</option>;
     }
+    if (getAuthors.error) {
+      return <option disabled>Can&apos;t connect to API</option>;
+    }
     return getAuthors.authors.map(author => (
       <option key={author.id} value={author.id}>
         {author.name}
