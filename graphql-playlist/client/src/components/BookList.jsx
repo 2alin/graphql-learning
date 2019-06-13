@@ -22,10 +22,9 @@ class BookList extends Component {
     }
     return (
       <div>
-        <ul>
+        <ul id="book-list">
           {data.books.map(book => (
             <li key={book.id}>
-              {book.name}
               <button
                 type="button"
                 onClick={() => {
@@ -33,7 +32,7 @@ class BookList extends Component {
                   // console.log(`clicked on ${book.id}`);
                 }}
               >
-                &gt;&gt;
+                {book.name}
               </button>
             </li>
           ))}
