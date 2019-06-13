@@ -2,8 +2,16 @@ import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import PropTypes from 'prop-types';
 import { getBooksQuery } from '../queries';
+import BookDetails from './BookDetails';
 
 class BookList extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selected: null,
+    };
+  }
+
   displayBooks() {
     const { data } = this.props;
     if (data.loading) {
@@ -13,16 +21,36 @@ class BookList extends Component {
       return <div>Can&apos;t connect to API</div>;
     }
     return (
-      <ul>
-        {data.books.map(book => (
-          <li key={book.id}>{book.name}</li>
-        ))}
-      </ul>
+      <div>
+        <ul>
+          {data.books.map(book => (
+            <li key={book.id}>
+              {book.name}
+              <button
+                type="button"
+                onClick={() => {
+                  this.setState({ selected: book.id });
+                  // console.log(`clicked on ${book.id}`);
+                }}
+              >
+                &gt;&gt;
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
     );
   }
 
   render() {
-    return <div>{this.displayBooks()}</div>;
+    const { selected } = this.state;
+
+    return (
+      <div>
+        {this.displayBooks()}
+        <BookDetails bookId={selected} />
+      </div>
+    );
   }
 }
 
