@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { graphql, compose } from 'react-apollo';
+import PropTypes from 'prop-types';
 import { getAuthorsQuery, addBookMutation, getBooksQuery } from '../queries';
 
 const initState = {
@@ -18,13 +19,15 @@ class AddBook extends Component {
     e.preventDefault();
 
     const formattedState = {};
+    const { addBook } = this.props;
 
     Object.keys(this.state).forEach((key) => {
-      formattedState[key] = this.state[key].trim();
+      const { [key]: value } = this.state;
+      formattedState[key] = value.trim();
     });
     formattedState.genre = formattedState.genre.toLowerCase();
 
-    this.props.addBookMutation({
+    addBook({
       variables: {
         ...formattedState,
       },
@@ -35,11 +38,11 @@ class AddBook extends Component {
   };
 
   displayAuthors() {
-    const { getAuthorsQuery: data } = this.props;
-    if (data.loading) {
+    const { getAuthors } = this.props;
+    if (getAuthors.loading) {
       return <option disabled>Loading authors...</option>;
     }
-    return data.authors.map(author => (
+    return getAuthors.authors.map(author => (
       <option key={author.id} value={author.id}>
         {author.name}
       </option>
@@ -73,6 +76,7 @@ class AddBook extends Component {
           </label>
         </div>
         <div className="field">
+          {/* eslint-disable-next-line jsx-a11y/label-has-for */}
           <label htmlFor="author">
             Author:
             <select
@@ -92,7 +96,12 @@ class AddBook extends Component {
   }
 }
 
+AddBook.propTypes = {
+  getAuthors: PropTypes.shape({ loading: PropTypes.bool, authors: PropTypes.array }).isRequired,
+  addBook: PropTypes.func.isRequired,
+};
+
 export default compose(
-  graphql(getAuthorsQuery, { name: 'getAuthorsQuery' }),
-  graphql(addBookMutation, { name: 'addBookMutation' }),
+  graphql(getAuthorsQuery, { name: 'getAuthors' }),
+  graphql(addBookMutation, { name: 'addBook' }),
 )(AddBook);

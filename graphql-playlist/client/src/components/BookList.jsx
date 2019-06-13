@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
+import PropTypes from 'prop-types';
 import { getBooksQuery } from '../queries';
 
 class BookList extends Component {
@@ -21,5 +22,12 @@ class BookList extends Component {
     return <div>{this.displayBooks()}</div>;
   }
 }
+
+BookList.propTypes = {
+  data: PropTypes.shape({
+    loading: PropTypes.bool,
+    books: PropTypes.array,
+  }).isRequired,
+};
 
 export default graphql(getBooksQuery)(BookList);
