@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { graphql } from 'react-apollo';
+import { graphql, compose } from 'react-apollo';
 import PropTypes from 'prop-types';
-import { getBooksQuery } from '../queries';
+import { getBooksQuery, removeBookMutation } from '../queries';
 import BookDetails from './BookDetails';
 
 class BookList extends Component {
@@ -13,32 +13,45 @@ class BookList extends Component {
   }
 
   displayBooks() {
-    const { data } = this.props;
-    if (data.loading) {
+    const { getBooks } = this.props;
+    if (getBooks.loading) {
       return <div>Loading books...</div>;
     }
-    if (data.error) {
+    if (getBooks.error) {
       return <div>Can&apos;t connect to API</div>;
     }
     return (
       <div>
         <ul id="book-list">
-          {data.books.map(book => (
+          {getBooks.books.map(book => (
             <li key={book.id}>
               <button
                 type="button"
                 onClick={() => {
                   this.setState({ selected: book.id });
-                  // console.log(`clicked on ${book.id}`);
                 }}
               >
                 {book.name}
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  this.handleRemove(book.id);
+                }}
+              >
+                X
               </button>
             </li>
           ))}
         </ul>
       </div>
     );
+  }
+
+  handleRemove(id) {
+    const { removeBook } = this.props;
+
+    removeBook({ variables: { id }, refetchQueries: [{ query: getBooksQuery }] });
   }
 
   render() {
@@ -54,10 +67,14 @@ class BookList extends Component {
 }
 
 BookList.propTypes = {
-  data: PropTypes.shape({
+  getBooks: PropTypes.shape({
     loading: PropTypes.bool,
     books: PropTypes.array,
   }).isRequired,
+  removeBook: PropTypes.func.isRequired,
 };
 
-export default graphql(getBooksQuery)(BookList);
+export default compose(
+  graphql(getBooksQuery, { name: 'getBooks' }),
+  graphql(removeBookMutation, { name: 'removeBook' }),
+)(BookList);

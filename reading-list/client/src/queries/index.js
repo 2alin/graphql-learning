@@ -45,3 +45,12 @@ export const addBookMutation = gql`
     }
   }
 `;
+
+export const removeBookMutation = gql`
+  mutation($id: ID!) {
+    removeBook(id: $id) {
+      name
+      id
+    }
+  }
+`;
