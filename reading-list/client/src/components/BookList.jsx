@@ -30,6 +30,7 @@ class BookList extends Component {
                 onClick={() => {
                   this.setState({ selected: book.id });
                 }}
+                className="card"
               >
                 {book.name}
               </button>
@@ -38,6 +39,7 @@ class BookList extends Component {
                 onClick={() => {
                   this.handleRemove(book.id);
                 }}
+                className="remove"
               >
                 X
               </button>

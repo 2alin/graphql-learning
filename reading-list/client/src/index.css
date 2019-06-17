@@ -24,6 +24,7 @@ body {
 #book-list li {
   display: inline-block;
   margin: 0.75rem;
+  position: relative;
 }
 
 #book-list li button {
@@ -34,6 +35,34 @@ body {
   box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.3);
   color: #880e4f;
   cursor: pointer;
+}
+
+#book-list li .remove {
+  position: absolute;
+  bottom: calc(100% - 0.65rem);
+  left: calc(100% - 0.65rem);
+  border: none;
+  border-radius: 50%;
+  width: 1.65rem;
+  height: 1.65rem;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  font-weight: 800;
+  color: #ad1457;
+  display: none;
+}
+
+#book-list li .card:hover + .remove,
+#book-list li .card:focus + .remove {
+  display: flex;
+}
+
+#book-list li .remove:hover,
+#book-list li .remove:focus {
+  display: flex;
+  background: #ad1457;
+  color: white;
 }
 
 form {
