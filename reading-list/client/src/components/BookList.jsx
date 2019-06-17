@@ -56,6 +56,7 @@ class BookList extends Component {
 
   render() {
     const { selected } = this.state;
+    console.log('selected:', selected);
 
     return (
       <div>
