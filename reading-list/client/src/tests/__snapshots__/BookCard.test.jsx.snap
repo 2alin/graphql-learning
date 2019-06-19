@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`component renders correctly 1`] = `
+<div
+  className="card-container"
+>
+  <button
+    className="card"
+    onClick={[Function]}
+    type="button"
+  >
+    The Little Book
+  </button>
+  <button
+    className="remove"
+    onClick={[Function]}
+    type="button"
+  >
+    X
+  </button>
+</div>
+`;

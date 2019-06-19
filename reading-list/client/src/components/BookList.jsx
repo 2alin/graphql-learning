@@ -16,7 +16,7 @@ const List = handleSelect => (
         <ul id="book-list">
           {books.map(book => (
             <li key={book.id}>
-              <BookCard {...{ book }} handleSelect={() => handleSelect(book.id)} />
+              <BookCard {...{ book, handleSelect }} />
             </li>
           ))}
         </ul>

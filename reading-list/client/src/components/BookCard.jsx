@@ -16,7 +16,7 @@ const RemoveBook = id => (
 function BookCard({ book, handleSelect }) {
   return (
     <div className="card-container">
-      <button type="button" onClick={handleSelect} className="card">
+      <button type="button" onClick={() => handleSelect(book.id)} className="card">
         {book.name}
       </button>
       {RemoveBook(book.id)}
