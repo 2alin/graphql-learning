@@ -3,6 +3,7 @@ import { graphql, compose } from 'react-apollo';
 import PropTypes from 'prop-types';
 import { getBooksQuery, removeBookMutation } from '../queries';
 import BookDetails from './BookDetails';
+import BookCard from './BookCard';
 
 class BookList extends Component {
   constructor(props) {
@@ -12,7 +13,7 @@ class BookList extends Component {
     };
   }
 
-  displayBooks() {
+  displayBooks = () => {
     const { getBooks } = this.props;
     if (getBooks.loading) {
       return <div>Loading books...</div>;
@@ -25,36 +26,25 @@ class BookList extends Component {
         <ul id="book-list">
           {getBooks.books.map(book => (
             <li key={book.id}>
-              <button
-                type="button"
-                onClick={() => {
+              <BookCard
+                {...{ book }}
+                handleSelect={() => {
                   this.setState({ selected: book.id });
                 }}
-                className="card"
-              >
-                {book.name}
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  this.handleRemove(book.id);
-                }}
-                className="remove"
-              >
-                X
-              </button>
+                handleRemove={this.handleRemove}
+              />
             </li>
           ))}
         </ul>
       </div>
     );
-  }
+  };
 
-  handleRemove(id) {
+  handleRemove = (id) => {
     const { removeBook } = this.props;
 
     removeBook({ variables: { id }, refetchQueries: [{ query: getBooksQuery }] });
-  }
+  };
 
   render() {
     const { selected } = this.state;
