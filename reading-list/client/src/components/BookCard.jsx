@@ -1,15 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Mutation } from 'react-apollo';
+import { getBooksQuery, removeBookMutation } from '../queries';
 
-function BookCard({ book, handleSelect, handleRemove }) {
+const RemoveBook = id => (
+  <Mutation mutation={removeBookMutation} refetchQueries={[{ query: getBooksQuery }]}>
+    {removeBook => (
+      <button type="button" onClick={() => removeBook({ variables: { id } })} className="remove">
+        X
+      </button>
+    )}
+  </Mutation>
+);
+
+function BookCard({ book, handleSelect }) {
   return (
     <div className="card-container">
       <button type="button" onClick={handleSelect} className="card">
         {book.name}
       </button>
-      <button type="button" onClick={() => handleRemove(book.id)} className="remove">
-        X
-      </button>
+      {RemoveBook(book.id)}
     </div>
   );
 }
@@ -17,7 +27,6 @@ function BookCard({ book, handleSelect, handleRemove }) {
 BookCard.propTypes = {
   book: PropTypes.shape({ id: PropTypes.string, name: PropTypes.string }).isRequired,
   handleSelect: PropTypes.func.isRequired,
-  handleRemove: PropTypes.func.isRequired,
 };
 
 export default BookCard;
