@@ -10,9 +10,7 @@ const mocks = [
       query: getBooksQuery,
     },
     result: {
-      data: {
-        books: [],
-      },
+      data: { books: [] },
     },
   },
   {
@@ -22,10 +20,7 @@ const mocks = [
     },
     result: {
       data: {
-        removeBook: {
-          name: 'My Little Book',
-          id: '123',
-        },
+        removeBook: { name: 'My Little Book', id: '123' },
       },
     },
   },
