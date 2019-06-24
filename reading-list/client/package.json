@@ -51,6 +51,7 @@
     "eslint-plugin-jsx-a11y": "^6.2.1",
     "eslint-plugin-react": "^7.13.0",
     "husky": "^2.4.1",
-    "lint-staged": "^8.2.1"
+    "lint-staged": "^8.2.1",
+    "waait": "^1.0.5"
   }
 }
